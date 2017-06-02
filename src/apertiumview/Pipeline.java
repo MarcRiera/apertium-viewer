@@ -26,13 +26,13 @@ public class Pipeline {
     public String[] envp=null;
     public boolean ignoreErrorMessages;
 
-    private Pipeline() {        
+    private Pipeline() {
         processor.start();
-    } 
-    
-    public static Pipeline getPipeline() {        
+    }
+
+    public static Pipeline getPipeline() {
         return instance;
-    } 
+    }
 
     Thread processor = new Thread() {
         public void run() {
@@ -43,7 +43,7 @@ public class Pipeline {
                         task = nextTask;
                         nextTask = null;
                     } else {
-                        this.wait();                        
+                        this.wait();
                     }
                 }
             } catch (Throwable t) {
@@ -54,7 +54,7 @@ public class Pipeline {
 
     PipelineTask task = null;
     PipelineTask nextTask = null;
-    
+
     void queueAsyncProcessing(TextWidget sourceWidget, int priority, String input, TextWidget recieverWidget) {
         //System.out.println("q"+priority+" "+sourceWidget.getText());
         if (nextTask != null && nextTask.priority<priority) return;  // too low priority, ignore new task
@@ -78,9 +78,9 @@ public class Pipeline {
             t.recieverWidget = recieverWidget;
             synchronized (processor) {
                 nextTask = t;
-                processor.notify();            
+                processor.notify();
             }
-            
+
         } else {
             recieverWidget.setText(t.input);
             recieverWidget.setStatus(TextWidget.STATUS_EQUAL);
@@ -102,18 +102,13 @@ public class Pipeline {
         private String input;
         private TextWidget recieverWidget;
         public int priority = Integer.MAX_VALUE;
-        
+
         //Variables for external processing
-        private BufferedReader std;
-        private BufferedReader err;
-        private OutputStreamWriter osw;
         private Process proces;
         public long startTime = System.currentTimeMillis();
 
         public void run() {
           try {
-            PipelineTask t = this;
-            
             String output_= "";
             String err_ = "";
             int retval_;
@@ -140,9 +135,9 @@ public class Pipeline {
 								if (output_.isEmpty()) output_ = err_;
             }
             else {
-                String cmd = t.program.toString();
+                String cmd = this.program.getCommandName() + " " + this.program.getParameters();
                 cmd = cmd.replaceAll("\\$1", markUnknownWords ? "-g" : "-n");
-                cmd = cmd.replaceAll("\\$2", ""); // What is this $2 ??!??
+                cmd = cmd.replaceAll("\\$2", ""); // Don't display ambiguity
                 cmd = cmd.replaceAll("\\$3", ""); // What is this $3 ??!??
 
 								// add -t for transfer and interchunk
@@ -151,13 +146,12 @@ public class Pipeline {
 									String[] x = cmd.split(" ",2);
 									cmd = x[0] + " -t " + x[1];
 								}
-                t.proces = Runtime.getRuntime().exec(cmd, envp, execPath);
+                proces = Runtime.getRuntime().exec(cmd, envp, execPath);
 
                 // For mac users UTF-8 is needed.
-                t.std = new BufferedReader(new InputStreamReader(t.proces.getInputStream(),"UTF-8"));
-                t.err = new BufferedReader(new InputStreamReader(t.proces.getErrorStream(),"UTF-8"));
-                t.osw = new OutputStreamWriter(t.proces.getOutputStream(),"UTF-8");            
-
+                BufferedReader std = new BufferedReader(new InputStreamReader(proces.getInputStream(),"UTF-8"));
+                BufferedReader err = new BufferedReader(new InputStreamReader(proces.getErrorStream(),"UTF-8"));
+                OutputStreamWriter osw = new OutputStreamWriter(proces.getOutputStream(),"UTF-8");
                 osw.write(input,0,input.length());
                 osw.write('\n');
                 osw.close();
@@ -176,11 +170,11 @@ public class Pipeline {
                 if (retval_ != 0) outputsb.append("Return value: "+retval_+"\n"+err_+"\n");
                 output_ = outputsb.substring(0, outputsb.length()-1);//.trim();
             }
-            
+
             final String output = output_;
             final String err = err_;
             final int retval = retval_;
-            
+
             Runnable runnable = new Runnable() {
                 public void run() {
                     recieverWidget.setText(output);
@@ -199,7 +193,7 @@ public class Pipeline {
           } finally {
 						task = null;
           }
-        }    
+        }
     }
  }
 
