@@ -35,7 +35,7 @@ public class SourcecodeFinder {
 
 	public static String findTransferInterchunkFile(Program program) {
 		if (program.getProgram() == TRANSFER || program.getProgram()==INTERCHUNK) {
-			for (String param : program.getParameters().split(" ")) {
+			for (String param : program.getParameterList()) {
 				if (param.length()<10) continue; // strip parameters
 				if (param.endsWith(".bin")) continue;
 				if (param.endsWith(".class")) continue; // only t1x, antaux_t2x, t2x, t3x
@@ -91,7 +91,7 @@ public class SourcecodeFinder {
 			case TRANSFER:
 			case INTERCHUNK:
 			case POSTCHUNK:
-				for (String param : program.getParameters().split(" ")) {
+				for (String param : program.getParameterList()) {
 					File paramFile = new File(param);
 					String link = null;
 					if (paramFile.exists()) { // strip parameters and skip nonexistant files

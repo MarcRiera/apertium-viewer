@@ -9,6 +9,8 @@
 package apertiumview;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.SwingUtilities;
 
 import org.apertium.pipeline.Dispatcher;
@@ -135,18 +137,19 @@ public class Pipeline {
 								if (output_.isEmpty()) output_ = err_;
             }
             else {
-                String cmd = this.program.getCommandName() + " " + this.program.getParameters();
-                cmd = cmd.replaceAll("\\$1", markUnknownWords ? "-g" : "-n");
-                cmd = cmd.replaceAll("\\$2", ""); // Don't display ambiguity
-                cmd = cmd.replaceAll("\\$3", ""); // What is this $3 ??!??
+                List<String> args = new ArrayList<String>(program.getParameterList());
+                args = Dispatcher.replace("$1", markUnknownWords ? "-g" : "-n", args);
+                args = Dispatcher.replace("$2", "", args); // Don't display ambiguity
+                args = Dispatcher.replace("$3", "", args); // What is this $3 ??!??
+                args.add(0, program.getFullPath());
 
 								// add -t for transfer and interchunk
 								if (traceTransferInterchunk &&
 										(program.getProgram() == TRANSFER || program.getProgram() == INTERCHUNK)) {
-									String[] x = cmd.split(" ",2);
-									cmd = x[0] + " -t " + x[1];
+                  args.add(1, "-t");
 								}
-                proces = Runtime.getRuntime().exec(cmd, envp, execPath);
+                //proces = Runtime.getRuntime().exec(cmd, envp, execPath);
+                proces = Runtime.getRuntime().exec(args.toArray(new String[args.size()]), envp, execPath);
 
                 // For mac users UTF-8 is needed.
                 BufferedReader std = new BufferedReader(new InputStreamReader(proces.getInputStream(),"UTF-8"));
