@@ -31,7 +31,7 @@ sudo cp -r apertium-viewer.jar /usr/local/
 sudo echo "java -jar /usr/local/apertium-viewer.jar" > /usr/local/bin/apertium-viewer
 sudo chmod a+x /usr/local/bin/apertium-viewer
 
-Installing is actually optional. The program can also be execute using only the .jar file:
-java -jar apertium-dixtools.jar
+Installing is optional. The program can also be execute using only the .jar file:
+java -jar apertium-viewer.jar
 or just make a shortcut to apertium-viewer.jar on your desktop.
 

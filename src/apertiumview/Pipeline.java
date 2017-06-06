@@ -138,9 +138,9 @@ public class Pipeline {
             }
             else {
                 List<String> args = new ArrayList<String>(program.getParameterList());
-                args = Dispatcher.replace("$1", markUnknownWords ? "-g" : "-n", args);
-                args = Dispatcher.replace("$2", "", args); // Don't display ambiguity
-                args = Dispatcher.replace("$3", "", args); // What is this $3 ??!??
+                args = Program.replaceParameter(args, "$1", markUnknownWords ? "-g" : "-n");
+                args = Program.replaceParameter(args, "$2", null); // Don't display ambiguity
+                args = Program.replaceParameter(args, "$3", null); // What is this $3 ??!??
                 args.add(0, program.getFullPath());
 
 								// add -t for transfer and interchunk

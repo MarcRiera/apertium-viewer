@@ -28,7 +28,7 @@ import java.net.URL;
  * @author j
  */
 public class Version {
-	public static final String APERTIUM_VIEWER_VERSION = "2.5.2";
+	public static final String APERTIUM_VIEWER_VERSION = "2.5.3";
 	private static String message = null;
 
 	static String getNewVersionMessage() {
@@ -43,8 +43,9 @@ public class Version {
 			int n = sb.indexOf("\n");
 			String newestVersion = sb.substring(0, n).trim();
 			if (APERTIUM_VIEWER_VERSION.equals(newestVersion)) message = ""; // no new version
-			else message = "\nA new version of Apertium-viewer is available\nCurrent version: "
-					+APERTIUM_VIEWER_VERSION+"\nNew version: "+sb+"\n\n";
+			else message = "\n### A new version of Apertium-viewer is available! ####"
+              + "\nYou are using version: " +APERTIUM_VIEWER_VERSION
+              + "\nNew version is: "+sb+"\n\n";
 		} catch (Exception e) {
 			e.printStackTrace();
 			message = "";
