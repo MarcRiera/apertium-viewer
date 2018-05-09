@@ -685,7 +685,7 @@ public class ApertiumView extends javax.swing.JFrame {
 
 
 	private void downloadOnlineModes() throws IOException {
-		final String REPO_URL = "https://apertium.svn.sourceforge.net/svnroot/apertium/builds/language-pairs";
+		final String REPO_URL = "https://svn.code.sf.net/p/apertium/svn/builds/language-pairs";
 		StringBuilder sb = new StringBuilder();
 		InputStreamReader isr = new InputStreamReader(new URL(REPO_URL).openStream());
 		int ch = isr.read();
