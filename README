@@ -7,9 +7,9 @@ $ java -jar apertium-viewer.jar
 Find all the information in:
 http://wiki.apertium.org/wiki/Apertium-viewer
 
-Download from SVN
+Download from GIT
 
-$ svn co https://svn.code.sf.net/p/apertium/svn/trunk/apertium-viewer
+$ git clone
 
 Software prerequisites
 

@@ -691,14 +691,14 @@ public class ApertiumView extends javax.swing.JFrame {
 		int ch = isr.read();
 		while (ch != -1) { sb.append((char)ch); ch = isr.read(); }
 		isr.close();
-		prefs.put("onlineModes", sb.toString());
+		prefs.put("onlineModes2", sb.toString());
 	}
 
 	private void initOnlineModes() {
 		onlineModes = new ArrayList<String>();
 		onlineModeToLoader = new HashMap<String, URLClassLoader>();
 		onlineModeToCode = new HashMap<String, String>();
-		for (String line : prefs.get("onlineModes","").split("\n")) try {
+		for (String line : prefs.get("onlineModes2","").split("\n")) try {
 			String[] columns = line.split("\t");
 			if (columns.length > 3) {
 				URLClassLoader cl = new URLClassLoader(new URL[] { new URL(columns[1]) }, this.getClass().getClassLoader());
@@ -820,7 +820,7 @@ public class ApertiumView extends javax.swing.JFrame {
 		}
 		Path pairDir = apertiumDir.resolve("apertium-"+pair);
 
-		
+
 		StringBuilder sb = new StringBuilder();
 		sb.append("#\n# This will download files to "+apertiumDir+"\n#");
 		sb.append("\n# Go to a terminal window and copy the following commands into the terminal:\n#");
@@ -1422,7 +1422,7 @@ private void fitToText() {
 			local = false;
 			if (onlineModeToLoader != null) {
 				updateModesComboBox();
-			} else if (prefs.get("onlineModes","").length()>0) {
+			} else if (prefs.get("onlineModes2","").length()>0) {
 				initOnlineModes();
 				updateModesComboBox();
 				// Download a fresh version of the online modes for next time the program is started
