@@ -1,8 +1,9 @@
-2.5.4
+2.5.5
 
-New in this version (may 2018)
-* New Sourceforge URL for downloading languages
-* Old version cannot download its data anymore, so please update
+New in this version (oct 2019)
+* Internal editor works with Java 9 to 13.
+* External editor can be specified. Line numbers works 
+* Java version works with files compiled with lttoolbox version 3.5.0
 
 Download it from http://wiki.apertium.org/wiki/Apertium-viewer
 

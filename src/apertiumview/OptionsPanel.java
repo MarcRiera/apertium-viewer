@@ -28,19 +28,24 @@ public class OptionsPanel extends javax.swing.JPanel {
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
   private void initComponents() {
 
+    buttonGroup1 = new javax.swing.ButtonGroup();
     jScrollPane1 = new javax.swing.JScrollPane();
     envVarsTextArea = new javax.swing.JTextArea();
     ignoreStdErr = new javax.swing.JCheckBox();
     jLabel1 = new javax.swing.JLabel();
     jLabel2 = new javax.swing.JLabel();
     workingDirTextField = new javax.swing.JTextField();
-    perferExternalEditor = new javax.swing.JCheckBox();
+    useInternalEditor = new javax.swing.JRadioButton();
+    useDefaultExternalEditor = new javax.swing.JRadioButton();
+    useCustomExternalEditor = new javax.swing.JRadioButton();
+    customExternalEditorCmd = new javax.swing.JTextField();
 
     envVarsTextArea.setColumns(20);
     envVarsTextArea.setRows(5);
     jScrollPane1.setViewportView(envVarsTextArea);
 
     ignoreStdErr.setText("<html>Ignore error messages from commands<br>\nThis will make stderr be ignored and transfer<br>\nrule tracing and warnings will not be shown");
+    ignoreStdErr.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
 
     jLabel1.setText("<html>Working directory for external commands<br>(leave empty to use default)");
 
@@ -48,7 +53,21 @@ public class OptionsPanel extends javax.swing.JPanel {
 
     workingDirTextField.setText("jTextField1");
 
-    perferExternalEditor.setText("Prefer external editor for editing source files");
+    buttonGroup1.add(useInternalEditor);
+    useInternalEditor.setText("Use internal editor");
+
+    buttonGroup1.add(useDefaultExternalEditor);
+    useDefaultExternalEditor.setText("Use default external editor");
+
+    buttonGroup1.add(useCustomExternalEditor);
+    useCustomExternalEditor.setText("Use external editor:");
+    useCustomExternalEditor.addChangeListener(new javax.swing.event.ChangeListener() {
+      public void stateChanged(javax.swing.event.ChangeEvent evt) {
+        useCustomExternalEditorStateChanged(evt);
+      }
+    });
+
+    customExternalEditorCmd.setText("emacsclient +%n %s");
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
     this.setLayout(layout);
@@ -59,32 +78,50 @@ public class OptionsPanel extends javax.swing.JPanel {
         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addComponent(jScrollPane1)
           .addComponent(workingDirTextField)
-          .addGroup(layout.createSequentialGroup()
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-              .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-              .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-              .addComponent(ignoreStdErr)
-              .addComponent(perferExternalEditor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGap(0, 0, Short.MAX_VALUE)))
+          .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+              .addComponent(useCustomExternalEditor)
+              .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+              .addComponent(customExternalEditorCmd))
+            .addGroup(layout.createSequentialGroup()
+              .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                  .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                  .addComponent(ignoreStdErr)
+                  .addComponent(jLabel1))
+                .addComponent(useInternalEditor)
+                .addComponent(useDefaultExternalEditor))
+              .addGap(0, 0, Short.MAX_VALUE))))
         .addContainerGap())
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(layout.createSequentialGroup()
-        .addComponent(perferExternalEditor)
-        .addGap(1, 1, 1)
-        .addComponent(ignoreStdErr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addComponent(useInternalEditor)
+        .addGap(4, 4, 4)
+        .addComponent(useDefaultExternalEditor)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(useCustomExternalEditor)
+          .addComponent(customExternalEditorCmd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addGap(18, 18, 18)
+        .addComponent(ignoreStdErr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addGap(18, 18, 18)
         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(workingDirTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addGap(18, 18, 18)
         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
         .addContainerGap())
     );
   }// </editor-fold>//GEN-END:initComponents
+
+  private void useCustomExternalEditorStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_useCustomExternalEditorStateChanged
+    // TODO add your handling code here:
+    customExternalEditorCmd.setEnabled(useCustomExternalEditor.isSelected());
+  }//GEN-LAST:event_useCustomExternalEditorStateChanged
 
     public void setExternalProcessingOptionsEnabled(boolean b) {
         envVarsTextArea.setEnabled(b);
@@ -96,12 +133,16 @@ public class OptionsPanel extends javax.swing.JPanel {
     }
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
+  private javax.swing.ButtonGroup buttonGroup1;
+  public javax.swing.JTextField customExternalEditorCmd;
   javax.swing.JTextArea envVarsTextArea;
   public javax.swing.JCheckBox ignoreStdErr;
   private javax.swing.JLabel jLabel1;
   private javax.swing.JLabel jLabel2;
   private javax.swing.JScrollPane jScrollPane1;
-  javax.swing.JCheckBox perferExternalEditor;
+  public javax.swing.JRadioButton useCustomExternalEditor;
+  public javax.swing.JRadioButton useDefaultExternalEditor;
+  public javax.swing.JRadioButton useInternalEditor;
   javax.swing.JTextField workingDirTextField;
   // End of variables declaration//GEN-END:variables
 

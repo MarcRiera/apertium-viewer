@@ -29,6 +29,7 @@ import java.awt.event.*;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.InputStreamReader;
 import static java.lang.Integer.parseInt;
 import java.net.URI;
@@ -169,27 +170,50 @@ public class ApertiumView extends javax.swing.JFrame {
 			se0.positionUpdate(SourceEditor.parseProperties(url.getQuery()));
 			return;
 		}
-		if (!prefs.getBoolean("perferExternalEditor", false)) {
+
+    boolean oldPreferExternalEditor = prefs.getBoolean("perferExternalEditor", false); // obsolete in 2019 - delete in 2021
+
+		if (prefs.getBoolean("useInternalEditor", !oldPreferExternalEditor)) {
 			try {
 				SourceEditor se = new SourceEditor(this, path, url.getQuery());
 				openSourceEditors.put(path, se);
-				return;
 			} catch (Exception ex) {
 				ex.printStackTrace();
-				warnUser("Error opening "+path+ ":\n"+ex+"\n\nTrying external editor");
+				warnUser("Error opening "+path+ ":\n"+ex+"\n\nTrying default external editor");
+        openDefaultExternalEditor(path);
 			}
-		}
-		try {
-			java.awt.Desktop.getDesktop().edit(new File(path));
-		} catch (Exception ex0) {
-			try {
-				java.awt.Desktop.getDesktop().open(new File(path));
-			} catch (Exception ex1) {
-				warnUser("Error opening "+path+ ":\n"+ex1);
-				ex0.printStackTrace();
-			}
-		}
+		} else if (prefs.getBoolean("useDefaultExternalEditor", oldPreferExternalEditor)) {
+      openDefaultExternalEditor(path);
+    } else { // useCustomExternalEditor
+      String cmd = prefs.get("customExternalEditorCmd", "emacs +%n %s");
+      cmd = cmd.replace("%s", path); // file name
+      int lineNo = 0;
+      try {
+        lineNo = SourceEditor.findLineNo(SourceEditor.parseProperties(url.getQuery()), new FileReader(path));
+      } catch (Exception e) { System.err.println("Couldnt fine line number from "+url); e.printStackTrace(); }
+
+      cmd = cmd.replace("%n", ""+lineNo); // line number
+      try {
+        Runtime.getRuntime().exec(cmd);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				warnUser("Error starting external command:\n"+cmd+ ":\n"+ex+"\n\n(try changing to the internal editor in options)");
+      }
+    }
 	}
+
+  private void openDefaultExternalEditor(String path) {
+    try {
+      java.awt.Desktop.getDesktop().edit(new File(path));
+    } catch (Exception ex0) {
+      try {
+        java.awt.Desktop.getDesktop().open(new File(path));
+      } catch (Exception ex1) {
+        warnUser("Error opening "+path+ ":\n"+ex1);
+        ex0.printStackTrace();
+      }
+    }
+  }
 
 	public void closeSourceEditor(String path) {
 		SourceEditor se = openSourceEditors.remove(path);
@@ -1293,13 +1317,23 @@ private void editOptions(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edit
 	op.workingDirTextField.setText(prefs.get("workingDir", ""));
 	op.envVarsTextArea.setText(prefs.get("envVars", ""));
 	op.ignoreStdErr.setSelected(Boolean.parseBoolean(prefs.get("ignoreStdErr", "false")));
-	op.perferExternalEditor.setSelected(prefs.getBoolean("perferExternalEditor", false));
+
+  boolean oldPreferExternalEditor = prefs.getBoolean("perferExternalEditor", false); // obsolete in 2019 - delete in 2021
+	op.useInternalEditor.setSelected(prefs.getBoolean("useInternalEditor", !oldPreferExternalEditor));
+	op.useDefaultExternalEditor.setSelected(prefs.getBoolean("useDefaultExternalEditor", oldPreferExternalEditor));
+	op.useCustomExternalEditor.setSelected(prefs.getBoolean("useCustomExternalEditor", false));
+	op.customExternalEditorCmd.setText(prefs.get("customExternalEditorCmd", "emacs +%n %s"));
+
 	int ret = JOptionPane.showConfirmDialog(mainPanel, op, "Edit Options", JOptionPane.OK_CANCEL_OPTION);
 	if (ret == JOptionPane.OK_OPTION) {
 		prefs.put("workingDir", op.workingDirTextField.getText());
 		prefs.put("envVars", op.envVarsTextArea.getText());
 		prefs.put("ignoreStdErr", Boolean.toString(op.ignoreStdErr.isSelected()));
-		prefs.putBoolean("perferExternalEditor", op.perferExternalEditor.isSelected());
+    prefs.putBoolean("useInternalEditor", op.useInternalEditor.isSelected());
+    prefs.putBoolean("useDefaultExternalEditor", op.useDefaultExternalEditor.isSelected());
+    prefs.putBoolean("useCustomExternalEditor", op.useCustomExternalEditor.isSelected());
+    prefs.put("customExternalEditorCmd", op.customExternalEditorCmd.getText());
+
 		modesComboBoxActionPerformed(null); // reload the current mode
 	}
 }//GEN-LAST:event_editOptions

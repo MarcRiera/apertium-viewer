@@ -2,3 +2,4 @@
 /build/
 /nbproject/
 apertium-viewer.jar
+*.log

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015 Jacob Nordfalk
- * 
+ *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.StringReader;
 import static java.lang.Integer.parseInt;
 import java.nio.file.Files;
@@ -39,12 +40,14 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 import javax.swing.text.Element;
+import javax.xml.parsers.ParserConfigurationException;
 import jsyntaxpane.DefaultSyntaxKit;
 import jsyntaxpane.SyntaxDocument;
 import jsyntaxpane.actions.CaretMonitor;
 import org.apertium.pipeline.Program;
 import static org.apertium.pipeline.Program.ProgEnum.*;
 import org.apertium.utils.IOUtils;
+import org.xml.sax.SAXException;
 
 public class SourceEditor extends javax.swing.JFrame {
 	private String loadedPath;
@@ -207,7 +210,7 @@ public class SourceEditor extends javax.swing.JFrame {
 				// setText should not be called (read the JavaDocs).  Better use the read
 				// method and create a new document.
 				Document doc = kit.createDefaultDocument();
-				doc.insertString(0, oldText, null);				
+				doc.insertString(0, oldText, null);
 				jEditorPane.setDocument(doc);
 				//jEdtTest.read(new StringReader(oldText), lang);
 			} catch (Exception ex) {
@@ -221,7 +224,7 @@ public class SourceEditor extends javax.swing.JFrame {
 		if (!validateFile() &&
 			JOptionPane.showConfirmDialog(this, "The file doesent validate. Are you sure you want to save it?", "Save file?", JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION)
 			return;
-		
+
 		try {
 			String text = jEditorPane.getText();
 			Path filePath = Paths.get(loadedPath);
@@ -318,12 +321,22 @@ public class SourceEditor extends javax.swing.JFrame {
 	}
 
 
+  public static int findLineNo(HashMap<String, String> loadedFileProperties, Reader fileContent) {
+		String findTag = loadedFileProperties.get("findTag");
+		if (findTag!=null) try {
+      int findTagNo = Integer.parseInt(loadedFileProperties.get("findTagNo"));
+      int lineNo = PositionalXMLReader.findLinenumberOfTag(fileContent, findTag, findTagNo);
+      return lineNo;
+		} catch (Exception e) { e.printStackTrace(); }
+    return 0;
+  }
+
 	public boolean positionUpdate(HashMap<String, String> loadedFileProperties) {
 		String findTag = loadedFileProperties.get("findTag");
 		if (findTag!=null) try {
-			int findTagNo = Integer.parseInt(loadedFileProperties.get("findTagNo"));
 			Document doc = jEditorPane.getDocument();
-			int lineNo = PositionalXMLReader.findLinenumberOfTag(new StringReader(doc.getText(0, doc.getLength())), findTag, findTagNo);
+      String fileContent = doc.getText(0, doc.getLength());
+			int lineNo = findLineNo(loadedFileProperties, new StringReader(fileContent));
 			gotoLineNo(lineNo);
 			return true;
 		} catch (Exception e) { e.printStackTrace(); }
