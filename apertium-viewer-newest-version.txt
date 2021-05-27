@@ -5,5 +5,5 @@ New in this version (oct 2019)
 * External editor can be specified. Line numbers works 
 * Java version works with files compiled with lttoolbox version 3.5.0
 
-Download it from http://wiki.apertium.org/wiki/Apertium-viewer
+Download it from https://wiki.apertium.org/wiki/Apertium-viewer
 

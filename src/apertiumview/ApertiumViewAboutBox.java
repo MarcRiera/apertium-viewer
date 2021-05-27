@@ -66,7 +66,7 @@ public class ApertiumViewAboutBox extends javax.swing.JDialog {
     homepageLabel.setFont(homepageLabel.getFont().deriveFont(homepageLabel.getFont().getStyle() | java.awt.Font.BOLD));
     homepageLabel.setText("Homepage:");
 
-    appHomepageLabel.setText("<html><a href='http://wiki.apertium.org/wiki/Apertium-viewer'>http://wiki.apertium.org/wiki/Apertium-viewer</a>\n");
+    appHomepageLabel.setText("<html><a href='https://wiki.apertium.org/wiki/Apertium-viewer'>https://wiki.apertium.org/wiki/Apertium-viewer</a>\n");
     appHomepageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
       public void mouseClicked(java.awt.event.MouseEvent evt) {
         appHomepageLabelMouseClicked(evt);
@@ -167,7 +167,7 @@ public class ApertiumViewAboutBox extends javax.swing.JDialog {
 
   private void appHomepageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_appHomepageLabelMouseClicked
 			try {
-				Desktop.getDesktop().browse(new URI("http://wiki.apertium.org/wiki/Apertium-viewer"));
+				Desktop.getDesktop().browse(new URI("https://wiki.apertium.org/wiki/Apertium-viewer"));
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}

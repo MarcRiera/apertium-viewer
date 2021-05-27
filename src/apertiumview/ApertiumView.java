@@ -77,7 +77,7 @@ import org.apertium.utils.IOUtils;
 
 /**
  * The application's main frame.
- * See  http://wiki.apertium.org/wiki/Apertium-viewer
+ * See  https://wiki.apertium.org/wiki/Apertium-viewer
  */
 public class ApertiumView extends javax.swing.JFrame {
 	private final Container mainPanel;
@@ -835,11 +835,11 @@ public class ApertiumView extends javax.swing.JFrame {
 			Runtime.getRuntime().exec("lt-comp");
 		} catch (IOException ex) {
 			try {
-				Desktop.getDesktop().browse(new URI("http://wiki.apertium.org/wiki/Installation"));
+				Desktop.getDesktop().browse(new URI("https://wiki.apertium.org/wiki/Installation"));
 			} catch (Exception ex1) {
 				ex.printStackTrace();
 			}
-			warnUser("<html>You first need to install Apertium development tools.<br>See <a href='http://wiki.apertium.org/wiki/Installation'>http://wiki.apertium.org/wiki/Installation</a><br>for info how to do it.");
+			warnUser("<html>You first need to install Apertium development tools.<br>See <a href='https://wiki.apertium.org/wiki/Installation'>https://wiki.apertium.org/wiki/Installation</a><br>for info how to do it.");
 			return;
 		}
 		Path pairDir = apertiumDir.resolve("apertium-"+pair);
@@ -857,7 +857,7 @@ public class ApertiumView extends javax.swing.JFrame {
 		sb.append("\ncd "+pairDir);
 		sb.append("\nmake\n");
 		sb.append("\n# Press OK when all the commands have finished execution\n");
-		sb.append("\n# You might need to install additional tools - see http://wiki.apertium.org/wiki/Installation\n");
+		sb.append("\n# You might need to install additional tools - see https://wiki.apertium.org/wiki/Installation\n");
 		JTextArea ta = new JTextArea(sb.toString());
 		int ret = JOptionPane.showConfirmDialog(mainPanel, wrapInScrollPane(ta),
 				"Press OK when you have executed the commands", JOptionPane.OK_CANCEL_OPTION);
@@ -1303,7 +1303,7 @@ private void editModesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {/
 private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpMenuItemActionPerformed
 	try {
 		// TODO add your handling code here:
-		java.awt.Desktop.getDesktop().browse(new URI("http://wiki.apertium.org/wiki/Apertium-viewer#Features"));
+		java.awt.Desktop.getDesktop().browse(new URI("https://wiki.apertium.org/wiki/Apertium-viewer#Features"));
 	} catch (Exception ex) {
 		Logger.getLogger(ApertiumView.class.getName()).log(Level.SEVERE, null, ex);
 		warnUser(ex.toString());
@@ -1341,7 +1341,7 @@ private void editOptions(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edit
 private void importTestCase(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importTestCase
 	// TODO add your handling code here:
 	String text = "Here you can import input sentences you want to test.\n"
-			+ "For example, go to http://wiki.apertium.org/wiki/English_and_Esperanto/Regression_tests\nand copy some tests into this window, like this:\n\n"
+			+ "For example, go to https://wiki.apertium.org/wiki/English_and_Esperanto/Regression_tests\nand copy some tests into this window, like this:\n\n"
 			+ "# (en) My dog → Mia hundo\n"
 			+ "# (en) My big dogs → Miaj grandaj hundoj\n"
 			+ "# (en) Your big dogs → Viaj grandaj hundoj\n"
