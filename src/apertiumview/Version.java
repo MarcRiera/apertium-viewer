@@ -28,7 +28,7 @@ import java.net.URL;
  * @author j
  */
 public class Version {
-	public static final String APERTIUM_VIEWER_VERSION = "2.5.5";
+	public static final String APERTIUM_VIEWER_VERSION = "2.6.0";
 	private static String message = null;
 
 	static String getNewVersionMessage() {

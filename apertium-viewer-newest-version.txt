@@ -1,9 +1,7 @@
-2.5.5
+2.6.0
 
-New in this version (oct 2019)
-* Internal editor works with Java 9 to 13.
-* External editor can be specified. Line numbers works 
-* Java version works with files compiled with lttoolbox version 3.5.0
+New in this version (feb 2022)
+* All java versions (from 8 to 17) is now supported
 
 Download it from https://wiki.apertium.org/wiki/Apertium-viewer
 

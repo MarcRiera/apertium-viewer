@@ -850,7 +850,7 @@ public class ApertiumView extends javax.swing.JFrame {
 		sb.append("\n# Go to a terminal window and copy the following commands into the terminal:\n#");
 		sb.append("\ncd "+apertiumDir);
 		if (!Files.exists( apertiumDir.resolve("apertium-get") )) {
-			sb.append("\nwget https://raw.githubusercontent.com/unhammer/apertium-get/master/apertium-get"
+			sb.append("\nwget https://raw.githubusercontent.com/apertium/apertium-get/master/apertium-get.py -O apertium-get\n"
 					+ "\nchmod +x apertium-get");
 		}
 		sb.append("\n./apertium-get "+pair);

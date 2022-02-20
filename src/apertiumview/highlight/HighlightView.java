@@ -30,8 +30,6 @@ import javax.swing.text.WrappedPlainView;
  * Using WrappedPlainView here because we DO want line wrapping to occur.
  * 
  * @author Jacob Nordfalk
- * @date 13-jan-2006
- *
  */
 public class HighlightView extends WrappedPlainView {//PlainView 
 
